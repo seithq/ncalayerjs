@@ -1,0 +1,27 @@
+{
+  "name": "ncalayer",
+  "version": "0.0.1",
+  "description": "A small wrapper around NCALayer websocket API.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seithq/ncalayerjs.git"
+  },
+  "keywords": [
+    "ncalayer"
+  ],
+  "author": "Daniyar Baitursynov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seithq/ncalayerjs/issues"
+  },
+  "homepage": "https://github.com/seithq/ncalayerjs#readme",
+  "devDependencies": {
+    "typescript": "^4.0.3"
+  }
+}
