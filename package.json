@@ -1,5 +1,5 @@
 {
-  "name": "ncalayer",
+  "name": "@seithq/ncalayer",
   "version": "0.0.1",
   "description": "A small wrapper around NCALayer websocket API.",
   "main": "dist/index.js",
