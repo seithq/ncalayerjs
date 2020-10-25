@@ -104,5 +104,4 @@ class Client {
   }
 }
 
-export { NCALayerError }
-export default Client
+export { NCALayerError, Client }

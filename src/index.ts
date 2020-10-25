@@ -1,1 +1,1 @@
-export { version } from "./version"
+export { NCALayerError, Client } from "./client"
