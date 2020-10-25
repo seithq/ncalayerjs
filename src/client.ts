@@ -35,7 +35,7 @@ type Payload = {
 class Client {
   private ws: WebSocket
   private err: NCALayerError
-  private cb: (data) => {}
+  private callback: (data) => {}
 
   constructor(url?: string) {
     this.err = { code: -1, reason: "", message: "" }
@@ -62,7 +62,7 @@ class Client {
         return
       }
 
-      this.cb(JSON.parse(e.data))
+      this.callback(JSON.parse(e.data))
     }
   }
 
@@ -96,7 +96,7 @@ class Client {
     currentDirectory: string,
     callback: (data) => {}
   ): void {
-    this.cb = callback
+    this.callback = callback
     this.send({
       method: MethodName.BrowseKeyStore,
       args: [storageName, fileExtension, currentDirectory],
@@ -104,4 +104,5 @@ class Client {
   }
 }
 
+export { NCALayerError }
 export default Client
