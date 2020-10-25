@@ -1,1 +1,4 @@
-export { NCALayerError, Client } from "./client"
+import Client, { Callback } from "./client"
+
+export default Client
+export { Callback }
