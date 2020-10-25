@@ -1,4 +1,4 @@
-import Client from "../client"
+import { Client } from "../client"
 
 test("should create client", () => {
   const client = new Client("wss://127.0.0.1:13579/")
