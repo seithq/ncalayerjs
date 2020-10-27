@@ -6,12 +6,12 @@ export default class Response {
   private errorCode: string
 
   constructor(result: string, secondResult: string, errorCode: string) {
-    this.result = result
-    this.secondResult = secondResult
-    this.errorCode = errorCode
+    this.result = result || ""
+    this.secondResult = secondResult || ""
+    this.errorCode = errorCode || ""
   }
 
-  isOk = () => {
+  isOk(): boolean {
     return isNone(this.errorCode) && !isNullOrEmpty(this.result)
   }
 

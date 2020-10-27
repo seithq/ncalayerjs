@@ -29,7 +29,7 @@ export type Payload = {
   args: any[]
 }
 
-export type Callback = (data: Response) => void
+export type Callback = (resp: Response) => void
 
 export type ClientError = { message: string }
 
@@ -42,15 +42,15 @@ export default class Client {
 
   constructor(ws: WebSocket) {
     if (ws) {
-      this.cb = (data: Response) => {
-        if (data.isOk()) this.version = data.getResultObject()?.version
+      this.cb = (resp: Response) => {
+        if (resp.isOk()) this.version = resp.getResultObject()?.version
       }
 
       this.ws = ws
       this.ws.onmessage = (e) => {
         const data = JSON.parse(e.data)
         if (data) {
-          this.cb(data)
+          this.cb(new Response(data.result, data.secondResult, data.errorCode))
         } else {
           console.log(
             "onmessage: proper callback is not set or wrong data format:"
