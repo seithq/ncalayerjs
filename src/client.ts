@@ -43,7 +43,7 @@ export default class Client {
   constructor(ws: WebSocket) {
     if (ws) {
       this.cb = (resp: Response) => {
-        if (resp.isOk()) this.version = resp.getResultObject()?.version
+        this.version = resp.getResultObject()?.version
       }
 
       this.ws = ws

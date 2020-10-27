@@ -20,7 +20,7 @@ export default class Response {
   }
 
   getResultObject(): any {
-    return JSON.parse(this.getResult())
+    return this.getResult()
   }
 
   getSecondResult(): string {
