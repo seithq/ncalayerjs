@@ -65,6 +65,10 @@ export default class Client {
     this.err = { message: "init: websocket instance is null or undefined" }
   }
 
+  readyState(): number {
+    return this.ws.readyState
+  }
+
   close() {
     this.ws.close()
   }
