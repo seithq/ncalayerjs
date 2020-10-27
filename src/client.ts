@@ -38,11 +38,12 @@ export default class Client {
   private ws: WebSocket
   private err: ClientError = { message: "" }
 
+  version: string
+
   constructor(ws: WebSocket) {
     if (ws) {
       this.cb = (data: Response) => {
-        if (data.isOk())
-          console.log("version: " + data.getResultObject()?.version)
+        if (data.isOk()) this.version = data.getResultObject()?.version
       }
 
       this.ws = ws
