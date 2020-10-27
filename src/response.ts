@@ -11,7 +11,7 @@ export default class Response {
     this.errorCode = errorCode
   }
 
-  isOk(): boolean {
+  isOk = () => {
     return isNone(this.errorCode) && !isNullOrEmpty(this.result)
   }
 
