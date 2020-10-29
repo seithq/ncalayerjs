@@ -263,7 +263,8 @@ export default class Client {
     this.cb = callback
     this.send({
       method: Method.VerifyCMSSignature,
-      args: [toVerify, signature],
+      // swap params due to NCALayer' inconvenient order
+      args: [signature, toVerify],
     })
   }
 
