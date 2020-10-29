@@ -285,14 +285,15 @@ export default class Client {
   }
 
   verifyCMSSignatureFromFile(
-    toVerify: string,
     filePath: string,
+    signature: string,
     callback: Callback
   ) {
     this.cb = callback
     this.send({
       method: Method.VerifyCMSSignatureFromFile,
-      args: [toVerify, filePath],
+      // swap params due to NCALayer' inconvenient order
+      args: [signature, filePath],
     })
   }
 
