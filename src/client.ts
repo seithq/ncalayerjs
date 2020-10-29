@@ -38,7 +38,8 @@ export default class Client {
   private ws: WebSocket
   private err: ClientError = { message: "" }
 
-  version: string
+  method: Method = Method.None
+  version: string = ""
 
   constructor(ws: WebSocket) {
     if (ws) {
@@ -48,6 +49,9 @@ export default class Client {
 
       this.ws = ws
       this.ws.onmessage = (e) => {
+        // Skip this because setLocale returns nothing.
+        if (this.method === Method.SetLocale) return
+
         const data = JSON.parse(e.data)
         if (data) {
           this.cb(new Response(data.result, data.secondResult, data.errorCode))
@@ -81,12 +85,12 @@ export default class Client {
     return this.err
   }
 
-  send(data: Payload): Method {
+  send(data: Payload) {
     // Return none if client has error.
     if (this.hasError()) return Method.None
 
+    this.method = data.method
     this.ws.send(JSON.stringify(data))
-    return data.method
   }
 
   browseKeyStore(
@@ -94,9 +98,9 @@ export default class Client {
     fileExtension: string,
     currentDirectory: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.BrowseKeyStore,
       args: [storageName, fileExtension, currentDirectory],
     })
@@ -106,9 +110,9 @@ export default class Client {
     fileExtension: string,
     currentDirectory: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.ShowFileChooser,
       args: [fileExtension, currentDirectory],
     })
@@ -120,17 +124,17 @@ export default class Client {
     password: string,
     type: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.GetKeys,
       args: [storageName, storagePath, password, type],
     })
   }
 
-  setLocale(lang: string, callback: Callback): Method {
+  setLocale(lang: string, callback: Callback) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.SetLocale,
       args: [lang],
     })
@@ -142,9 +146,9 @@ export default class Client {
     keyAlias: string,
     password: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.GetNotBefore,
       args: [storageName, storagePath, keyAlias, password],
     })
@@ -156,9 +160,9 @@ export default class Client {
     keyAlias: string,
     password: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.GetNotAfter,
       args: [storageName, storagePath, keyAlias, password],
     })
@@ -170,9 +174,9 @@ export default class Client {
     keyAlias: string,
     password: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.GetSubjectDN,
       args: [storageName, storagePath, keyAlias, password],
     })
@@ -184,9 +188,9 @@ export default class Client {
     keyAlias: string,
     password: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.GetIssuerDN,
       args: [storageName, storagePath, keyAlias, password],
     })
@@ -200,9 +204,9 @@ export default class Client {
     oid: string,
     oidIndex: number,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.GetRdnByOid,
       args: [storageName, storagePath, keyAlias, password, oid, oidIndex],
     })
@@ -215,9 +219,9 @@ export default class Client {
     password: string,
     toSign: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.SignPlainData,
       args: [storageName, storagePath, keyAlias, password, toSign],
     })
@@ -231,9 +235,9 @@ export default class Client {
     toVerify: string,
     signature: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.VerifyPlainData,
       args: [storageName, storagePath, keyAlias, password, toVerify, signature],
     })
@@ -247,21 +251,17 @@ export default class Client {
     toSign: string,
     attached: boolean,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.CreateCMSSignature,
       args: [storageName, storagePath, keyAlias, password, toSign, attached],
     })
   }
 
-  verifyCMSSignature(
-    toVerify: string,
-    signature: string,
-    callback: Callback
-  ): Method {
+  verifyCMSSignature(toVerify: string, signature: string, callback: Callback) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.VerifyCMSSignature,
       args: [toVerify, signature],
     })
@@ -275,9 +275,9 @@ export default class Client {
     filePath: string,
     attached: boolean,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.CreateCMSSignatureFromFile,
       args: [storageName, storagePath, keyAlias, password, filePath, attached],
     })
@@ -287,9 +287,9 @@ export default class Client {
     toVerify: string,
     filePath: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.VerifyCMSSignatureFromFile,
       args: [toVerify, filePath],
     })
@@ -302,17 +302,17 @@ export default class Client {
     password: string,
     toSign: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.SignXml,
       args: [storageName, storagePath, keyAlias, password, toSign],
     })
   }
 
-  verifyXml(signature: string, callback: Callback): Method {
+  verifyXml(signature: string, callback: Callback) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.VerifyXml,
       args: [signature],
     })
@@ -328,9 +328,9 @@ export default class Client {
     idAttrName: string,
     parentElementName: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.SignXmlByElementId,
       args: [
         storageName,
@@ -350,7 +350,7 @@ export default class Client {
     idAttrName: string,
     parentElementName: string,
     callback: Callback
-  ): Method {
+  ) {
     this.cb = callback
     this.send({
       method: Method.VerifyXml,
@@ -359,9 +359,9 @@ export default class Client {
     return Method.VerifyXmlByElementId
   }
 
-  getHash(input: string, digestAlg: string, callback: Callback): Method {
+  getHash(input: string, digestAlg: string, callback: Callback) {
     this.cb = callback
-    return this.send({
+    this.send({
       method: Method.GetHash,
       args: [input, digestAlg],
     })
