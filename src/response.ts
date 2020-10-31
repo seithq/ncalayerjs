@@ -31,27 +31,39 @@ export default class Response {
     return this.errorCode
   }
 
-  isWrongPasswordWithAttempts(): boolean {
-    return this.isWrongPassword() && +this.result > -1
+  isPasswordAttemptsError(): boolean {
+    return this.isPasswordError() && +this.result > -1
   }
 
-  isWrongPassword(): boolean {
+  isPasswordError(): boolean {
     return this.errorCode === "WRONG_PASSWORD"
   }
 
-  isWrongKeyType(): boolean {
+  isKeyTypeError(): boolean {
     return this.errorCode === "EMPTY_KEY_LIST"
   }
 
-  isRdnNotFound(): boolean {
+  isRdnNotFoundError(): boolean {
     return this.errorCode === "RDN_NOT_FOUND"
   }
 
-  isWrongXml(): boolean {
+  isXmlParseError(): boolean {
     return this.errorCode === "XML_PARSE_EXCEPTION"
   }
 
-  isWrongSignature(): boolean {
+  isSignatureValidationError(): boolean {
     return this.errorCode === "SIGNATURE_VALIDATION_ERROR"
+  }
+
+  isCommonError(): boolean {
+    return this.errorCode === "COMMON"
+  }
+
+  isKeyStoreError(): boolean {
+    return this.errorCode === "LOAD_KEYSTORE_ERROR"
+  }
+
+  isUnknownStorageError(): boolean {
+    return this.errorCode === "UNKNOWN_STORAGE"
   }
 }
