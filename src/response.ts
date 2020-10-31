@@ -1,5 +1,3 @@
-import { isNone, isNullOrEmpty } from "./helpers"
-
 export default class Response {
   private result: string
   private secondResult: string
@@ -9,10 +7,6 @@ export default class Response {
     this.result = result || ""
     this.secondResult = secondResult || ""
     this.errorCode = errorCode || ""
-  }
-
-  isOk(): boolean {
-    return isNone(this.errorCode) && !isNullOrEmpty(this.result)
   }
 
   getResult(): string {
@@ -29,6 +23,10 @@ export default class Response {
 
   getErrorCode(): string {
     return this.errorCode
+  }
+
+  isOk(): boolean {
+    return this.errorCode === "NONE"
   }
 
   isPasswordAttemptsError(): boolean {
