@@ -1,3 +1,3 @@
-// import { Client } from "../client"
+// import Client from "../client"
 
-// test("should do something", () => {})
+// test("should do something", (done) => {})
