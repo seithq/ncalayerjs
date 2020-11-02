@@ -358,7 +358,7 @@ export default class Client {
       method: Method.VerifyXml,
       args: [signature, idAttrName, parentElementName],
     })
-    return Method.VerifyXmlByElementId
+    this.method = Method.VerifyXmlByElementId
   }
 
   getHash(input: string, digestAlg: string, callback: Callback) {
