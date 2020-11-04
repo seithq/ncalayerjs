@@ -64,4 +64,8 @@ export default class Response {
   isUnknownStorageError(): boolean {
     return this.errorCode === "UNKNOWN_STORAGE"
   }
+
+  isFileReadError(): boolean {
+    return this.errorCode === "FILE_READ_ERROR"
+  }
 }
