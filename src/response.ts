@@ -14,7 +14,7 @@ export default class Response {
   }
 
   getResultObject(): any {
-    return this.getResult()
+    return this.result
   }
 
   getSecondResult(): string {
