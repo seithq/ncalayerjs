@@ -91,6 +91,7 @@ export default class Client {
     if (this.hasError()) return Method.None
 
     this.method = data.method
+    this.cb = callback
     this.ws.send(JSON.stringify(data))
   }
 
