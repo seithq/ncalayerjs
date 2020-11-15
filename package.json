@@ -1,6 +1,6 @@
 {
   "name": "@seithq/ncalayer",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A small wrapper around NCALayer websocket API.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

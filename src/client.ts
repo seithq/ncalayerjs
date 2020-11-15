@@ -25,6 +25,7 @@ export enum Method {
 }
 
 export type Payload = {
+  module?: string
   method: Method
   args: any[]
 }
@@ -85,7 +86,7 @@ export default class Client {
     return this.err
   }
 
-  send(data: Payload) {
+  send(data: Payload, callback: Callback) {
     // Return none if client has error.
     if (this.hasError()) return Method.None
 
@@ -99,11 +100,13 @@ export default class Client {
     currentDirectory: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.BrowseKeyStore,
-      args: [storageName, fileExtension, currentDirectory],
-    })
+    this.send(
+      {
+        method: Method.BrowseKeyStore,
+        args: [storageName, fileExtension, currentDirectory],
+      },
+      callback
+    )
   }
 
   showFileChooser(
@@ -111,11 +114,13 @@ export default class Client {
     currentDirectory: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.ShowFileChooser,
-      args: [fileExtension, currentDirectory],
-    })
+    this.send(
+      {
+        method: Method.ShowFileChooser,
+        args: [fileExtension, currentDirectory],
+      },
+      callback
+    )
   }
 
   getKeys(
@@ -125,19 +130,23 @@ export default class Client {
     type: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.GetKeys,
-      args: [storageName, storagePath, password, type],
-    })
+    this.send(
+      {
+        method: Method.GetKeys,
+        args: [storageName, storagePath, password, type],
+      },
+      callback
+    )
   }
 
   setLocale(lang: string, callback: Callback) {
-    this.cb = callback
-    this.send({
-      method: Method.SetLocale,
-      args: [lang],
-    })
+    this.send(
+      {
+        method: Method.SetLocale,
+        args: [lang],
+      },
+      callback
+    )
   }
 
   getNotBefore(
@@ -147,11 +156,13 @@ export default class Client {
     password: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.GetNotBefore,
-      args: [storageName, storagePath, keyAlias, password],
-    })
+    this.send(
+      {
+        method: Method.GetNotBefore,
+        args: [storageName, storagePath, keyAlias, password],
+      },
+      callback
+    )
   }
 
   getNotAfter(
@@ -161,11 +172,13 @@ export default class Client {
     password: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.GetNotAfter,
-      args: [storageName, storagePath, keyAlias, password],
-    })
+    this.send(
+      {
+        method: Method.GetNotAfter,
+        args: [storageName, storagePath, keyAlias, password],
+      },
+      callback
+    )
   }
 
   getSubjectDN(
@@ -175,11 +188,13 @@ export default class Client {
     password: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.GetSubjectDN,
-      args: [storageName, storagePath, keyAlias, password],
-    })
+    this.send(
+      {
+        method: Method.GetSubjectDN,
+        args: [storageName, storagePath, keyAlias, password],
+      },
+      callback
+    )
   }
 
   getIssuerDN(
@@ -189,11 +204,13 @@ export default class Client {
     password: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.GetIssuerDN,
-      args: [storageName, storagePath, keyAlias, password],
-    })
+    this.send(
+      {
+        method: Method.GetIssuerDN,
+        args: [storageName, storagePath, keyAlias, password],
+      },
+      callback
+    )
   }
 
   getRdnByOid(
@@ -205,11 +222,13 @@ export default class Client {
     oidIndex: number,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.GetRdnByOid,
-      args: [storageName, storagePath, keyAlias, password, oid, oidIndex],
-    })
+    this.send(
+      {
+        method: Method.GetRdnByOid,
+        args: [storageName, storagePath, keyAlias, password, oid, oidIndex],
+      },
+      callback
+    )
   }
 
   signPlainData(
@@ -220,11 +239,13 @@ export default class Client {
     toSign: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.SignPlainData,
-      args: [storageName, storagePath, keyAlias, password, toSign],
-    })
+    this.send(
+      {
+        method: Method.SignPlainData,
+        args: [storageName, storagePath, keyAlias, password, toSign],
+      },
+      callback
+    )
   }
 
   verifyPlainData(
@@ -236,11 +257,20 @@ export default class Client {
     signature: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.VerifyPlainData,
-      args: [storageName, storagePath, keyAlias, password, toVerify, signature],
-    })
+    this.send(
+      {
+        method: Method.VerifyPlainData,
+        args: [
+          storageName,
+          storagePath,
+          keyAlias,
+          password,
+          toVerify,
+          signature,
+        ],
+      },
+      callback
+    )
   }
 
   createCMSSignature(
@@ -252,20 +282,24 @@ export default class Client {
     attached: boolean,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.CreateCMSSignature,
-      args: [storageName, storagePath, keyAlias, password, toSign, attached],
-    })
+    this.send(
+      {
+        method: Method.CreateCMSSignature,
+        args: [storageName, storagePath, keyAlias, password, toSign, attached],
+      },
+      callback
+    )
   }
 
   verifyCMSSignature(toVerify: string, signature: string, callback: Callback) {
-    this.cb = callback
-    this.send({
-      method: Method.VerifyCMSSignature,
-      // swap params due to NCALayer' inconvenient order
-      args: [signature, toVerify],
-    })
+    this.send(
+      {
+        method: Method.VerifyCMSSignature,
+        // swap params due to NCALayer' inconvenient order
+        args: [signature, toVerify],
+      },
+      callback
+    )
   }
 
   createCMSSignatureFromFile(
@@ -277,11 +311,20 @@ export default class Client {
     attached: boolean,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.CreateCMSSignatureFromFile,
-      args: [storageName, storagePath, keyAlias, password, filePath, attached],
-    })
+    this.send(
+      {
+        method: Method.CreateCMSSignatureFromFile,
+        args: [
+          storageName,
+          storagePath,
+          keyAlias,
+          password,
+          filePath,
+          attached,
+        ],
+      },
+      callback
+    )
   }
 
   verifyCMSSignatureFromFile(
@@ -289,12 +332,14 @@ export default class Client {
     signature: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.VerifyCMSSignatureFromFile,
-      // swap params due to NCALayer' inconvenient order
-      args: [signature, filePath],
-    })
+    this.send(
+      {
+        method: Method.VerifyCMSSignatureFromFile,
+        // swap params due to NCALayer' inconvenient order
+        args: [signature, filePath],
+      },
+      callback
+    )
   }
 
   signXml(
@@ -305,19 +350,23 @@ export default class Client {
     toSign: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.SignXml,
-      args: [storageName, storagePath, keyAlias, password, toSign],
-    })
+    this.send(
+      {
+        method: Method.SignXml,
+        args: [storageName, storagePath, keyAlias, password, toSign],
+      },
+      callback
+    )
   }
 
   verifyXml(signature: string, callback: Callback) {
-    this.cb = callback
-    this.send({
-      method: Method.VerifyXml,
-      args: [signature],
-    })
+    this.send(
+      {
+        method: Method.VerifyXml,
+        args: [signature],
+      },
+      callback
+    )
   }
 
   signXmlByElementId(
@@ -331,20 +380,22 @@ export default class Client {
     parentElementName: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.SignXmlByElementId,
-      args: [
-        storageName,
-        storagePath,
-        keyAlias,
-        password,
-        toSign,
-        elementName,
-        idAttrName,
-        parentElementName,
-      ],
-    })
+    this.send(
+      {
+        method: Method.SignXmlByElementId,
+        args: [
+          storageName,
+          storagePath,
+          keyAlias,
+          password,
+          toSign,
+          elementName,
+          idAttrName,
+          parentElementName,
+        ],
+      },
+      callback
+    )
   }
 
   verifyXmlByElementId(
@@ -353,19 +404,23 @@ export default class Client {
     parentElementName: string,
     callback: Callback
   ) {
-    this.cb = callback
-    this.send({
-      method: Method.VerifyXml,
-      args: [signature, idAttrName, parentElementName],
-    })
+    this.send(
+      {
+        method: Method.VerifyXml,
+        args: [signature, idAttrName, parentElementName],
+      },
+      callback
+    )
     this.method = Method.VerifyXmlByElementId
   }
 
   getHash(input: string, digestAlg: string, callback: Callback) {
-    this.cb = callback
-    this.send({
-      method: Method.GetHash,
-      args: [input, digestAlg],
-    })
+    this.send(
+      {
+        method: Method.GetHash,
+        args: [input, digestAlg],
+      },
+      callback
+    )
   }
 }
